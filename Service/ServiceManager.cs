@@ -81,23 +81,23 @@ public static partial class ServiceManager
     }
     private static object _pingCycleLock = new();
     private static int _pingCycleCount = 0;
-    public static void PingCycle()
-    {
-        if (_pingCycleCount != 0) return;
-        lock (_pingCycleLock)
-        {
-            if (_pingCycleCount != 0) return;
-            _pingCycleCount++;
-            System.Threading.Timer timer = new Timer((state) =>
-                {
-                    var str = GetConnectionString(ServiceTypeEnum.Authentication);
-                    Logger.Info(str);
-                    Console.WriteLine(str);
-                }, null, 5000, 10000);
-            System.Threading.Timer pingTimer = new Timer((state) =>
-            {
-                ServicePingCycle();
-            }, null, 0, 1000);
-        }
-    }
+    // public static void PingCycle()
+    // {
+    //     if (_pingCycleCount != 0) return;
+    //     lock (_pingCycleLock)
+    //     {
+    //         if (_pingCycleCount != 0) return;
+    //         _pingCycleCount++;
+    //         System.Threading.Timer timer = new Timer((state) =>
+    //             {
+    //                 var str = GetConnectionString(ServiceTypeEnum.Authentication);
+    //                 Logger.Info(str);
+    //                 Console.WriteLine(str);
+    //             }, null, 5000, 10000);
+    //         System.Threading.Timer pingTimer = new Timer((state) =>
+    //         {
+    //             ServicePingCycle();
+    //         }, null, 0, 1000);
+    //     }
+    // }
 }

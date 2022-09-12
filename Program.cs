@@ -26,7 +26,7 @@ try
     string? neo4jAddress = null;
 
     // CUGOJ.CUGOJ_Core.Service.ServiceManager.PingCycle();
-    await CUGOJ.CUGOJ_Tools.RPC.RPCService.StartCoreService<CUGOJ.CUGOJ_Core.CoreServiceHandler>(env, ip, port, traceAddress, logAddress, mysqlAddress, redisAddress, neo4jAddress, CUGOJ.CUGOJ_Core.Service.ServiceManager.PingCycle);
+    await CUGOJ.CUGOJ_Tools.RPC.RPCService.StartCoreService<CUGOJ.CUGOJ_Core.CoreServiceHandler>(env, ip, port, traceAddress, logAddress, mysqlAddress, redisAddress, neo4jAddress);
 }
 catch (Exception e)
 {
