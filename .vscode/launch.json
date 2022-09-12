@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Use IntelliSense to find out which attributes exist for C# debugging
+            // Use hover for the description of the existing attributes
+            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/bin/Debug/net6.0/CUGOJ_Core.dll",
+            "args": [
+                "-localhost",
+                "-t",
+                "http://1.15.93.80:2268/api/traces",
+                "-l",
+                "http://1.15.93.80:3100",
+                "-mysql",
+                "server=1.15.93.80;port=4000;database=cugoj;user=cugoj;password=cugoj123456",
+                "-redis",
+                "1.15.93.80:4001"
+            ],
+            "cwd": "${workspaceFolder}",
+            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        }
+    ]
+}
