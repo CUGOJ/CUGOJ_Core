@@ -24,9 +24,30 @@ try
     if (parsedArgs.ContainsKey("redis"))
         redisAddress = parsedArgs["redis"];
     string? neo4jAddress = null;
-
-    // CUGOJ.CUGOJ_Core.Service.ServiceManager.PingCycle();
-    await CUGOJ.CUGOJ_Tools.RPC.RPCService.StartCoreService<CUGOJ.CUGOJ_Core.CoreServiceHandler>(env, ip, port, traceAddress, logAddress, mysqlAddress, redisAddress, neo4jAddress);
+    if (!CUGOJ.CUGOJ_Tools.Tools.DBTools.InitSqlite<CUGOJ.CUGOJ_Core.Dao.DB.CoreContext>())
+    {
+        throw new Exception("初始化数据库失败");
+    }
+    var properties = CUGOJ.CUGOJ_Core.Service.ServiceManager.LoadProperties();
+    if (properties != null)
+    {
+        await CUGOJ.CUGOJ_Tools.RPC.RPCService.StartCoreService<CUGOJ.CUGOJ_Core.CoreServiceHandler>(
+            properties.Env,
+            properties.ServiceID,
+            properties.ServiceIP,
+            null,
+            properties.TraceAddress,
+            properties.LogAddress,
+            properties.MysqlAddress,
+            properties.RedisAddress,
+            properties.Neo4jAddress,
+            CUGOJ.CUGOJ_Core.Service.ServiceManager.RegisterSelf
+        );
+    }
+    else
+    {
+        await CUGOJ.CUGOJ_Tools.RPC.RPCService.StartCoreService<CUGOJ.CUGOJ_Core.CoreServiceHandler>(env, null, ip, port, traceAddress, logAddress, mysqlAddress, redisAddress, neo4jAddress, CUGOJ.CUGOJ_Core.Service.ServiceManager.RegisterSelf);
+    }
 }
 catch (Exception e)
 {
