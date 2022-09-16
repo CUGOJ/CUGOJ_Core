@@ -220,7 +220,7 @@ public static partial class ServiceManager
                 serviceInfo.Neo4jAddress = Context.ServiceBaseInfo.Neo4jAddress;
                 context.Add(serviceInfo);
                 context.SaveChanges();
-                Logger.Info("Core服务已注册:{Service}", serviceInfo.ServiceIP + serviceInfo.ServicePort);
+                Logger.Info("Core服务已注册:{Service}", serviceInfo.ServiceIP + ":" + serviceInfo.ServicePort);
             }
             else
             {
