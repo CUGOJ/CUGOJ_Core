@@ -35,7 +35,7 @@ try
             properties.Env,
             properties.ServiceID,
             properties.ServiceIP,
-            null,
+            properties.ServicePort,
             properties.TraceAddress,
             properties.LogAddress,
             properties.MysqlAddress,

@@ -153,6 +153,7 @@ public static partial class ServiceManager
         public string ServiceID { get; set; } = string.Empty;
         public string Env { get; set; } = string.Empty;
         public string ServiceIP { get; set; } = string.Empty;
+        public int ServicePort { get; set; } = 0;
         public string? LogAddress { get; set; } = string.Empty;
         public string? TraceAddress { get; set; } = string.Empty;
         public string? MysqlAddress { get; set; } = string.Empty;
@@ -219,7 +220,7 @@ public static partial class ServiceManager
                 serviceInfo.Neo4jAddress = Context.ServiceBaseInfo.Neo4jAddress;
                 context.Add(serviceInfo);
                 context.SaveChanges();
-                Logger.Info("Core服务已注册:{Service}", serviceInfo);
+                Logger.Info("Core服务已注册:{Service}", serviceInfo.ServiceIP + serviceInfo.ServicePort);
             }
             else
             {
