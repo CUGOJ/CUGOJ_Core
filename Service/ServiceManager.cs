@@ -175,6 +175,7 @@ public static partial class ServiceManager
                 ServiceID = serviceInfo.ServiceID,
                 Env = serviceInfo.Env,
                 ServiceIP = serviceInfo.ServiceIP,
+                ServicePort = int.Parse(serviceInfo.ServicePort),
                 LogAddress = serviceInfo.LogAddress,
                 TraceAddress = serviceInfo.TraceAddress,
                 MysqlAddress = serviceInfo.MysqlAddress,
