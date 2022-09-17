@@ -8,3 +8,4 @@ mkdir output
 dotnet build -o ./output/ --configuration Release
 
 cp ./run.sh ./output/run.sh
+cp ./restart.sh ./output/restart.sh

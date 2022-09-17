@@ -151,4 +151,12 @@ public class CoreServiceHandler : CUGOJ.RPC.Gen.Services.Core.CoreService.IAsync
             return resp;
         });
     }
+
+    public Task<RestartResponse> Restart(RestartRequest req, CancellationToken cancellationToken = default)
+    {
+        CUGOJ.CUGOJ_Tools.RPC.RPCService.RestartService();
+        var resp = new RestartResponse();
+        resp.BaseResp = RPCTools.SuccessBaseResp();
+        return Task.FromResult(resp);
+    }
 }
