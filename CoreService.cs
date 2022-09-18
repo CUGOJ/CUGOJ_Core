@@ -159,4 +159,40 @@ public class CoreServiceHandler : CUGOJ.RPC.Gen.Services.Core.CoreService.IAsync
         resp.BaseResp = RPCTools.SuccessBaseResp();
         return Task.FromResult(resp);
     }
+
+    public async Task<AddServiceResponse> AddService(AddServiceRequest req, CancellationToken cancellationToken = default)
+    {
+        var registerInfo = await ServiceManager.RegisterNewService(req.ServiceType);
+        if (registerInfo == null)
+        {
+            var resp = new AddServiceResponse();
+            resp.BaseResp = RPCTools.ErrorBaseResp(new Exception("添加服务失败"));
+            return resp;
+        }
+        else
+        {
+            var resp = new AddServiceResponse(registerInfo.ToString());
+            resp.BaseResp = RPCTools.SuccessBaseResp();
+            return resp;
+        }
+    }
+
+    public Task<GetUnRegisteredServicesResponse> GetUnRegisteredServices(GetUnRegisteredServicesRequest req, CancellationToken cancellationToken = default)
+    {
+        var services = ServiceManager.GetUnRegisteredServices();
+        var connectionString = (from x in services select ServiceManager.GetConnectionStringByServiceID(x.ServiceID)).ToList();
+        var resp = new GetUnRegisteredServicesResponse(services, connectionString);
+        resp.BaseResp = RPCTools.SuccessBaseResp();
+        return Task.FromResult(resp);
+    }
+
+    public Task<GetConnectionStringByServiceIDResponse> GetConnectionStringByServiceID(GetConnectionStringByServiceIDRequest req, CancellationToken cancellationToken = default)
+    {
+        var resp = new GetConnectionStringByServiceIDResponse(ServiceManager.GetConnectionStringByServiceID(req.ServiceID));
+        if (resp.ConnectionString == "未知服务")
+            resp.BaseResp = RPCTools.ErrorBaseResp(new Exception("未知服务"));
+        else
+            resp.BaseResp = RPCTools.SuccessBaseResp();
+        return Task.FromResult(resp);
+    }
 }

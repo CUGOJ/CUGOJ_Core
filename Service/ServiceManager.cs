@@ -10,7 +10,7 @@ namespace CUGOJ.CUGOJ_Core.Service;
 
 public static partial class ServiceManager
 {
-    public static async Task<RPCRegisterInfo> RegisterNewService(ServiceTypeEnum serviceType)
+    public static async Task<RPCRegisterInfo?> RegisterNewService(ServiceTypeEnum serviceType)
     {
         using var context = new CoreContext();
         try
@@ -37,7 +37,7 @@ public static partial class ServiceManager
         catch (Exception e)
         {
             Logger.Error("[严重错误]注册新服务出错,未能连接到Sqlite数据库,Error = {error}", e);
-            throw new Exception("未能连接到Sqlite数据库");
+            return null;
         }
 
     }
@@ -293,6 +293,47 @@ public static partial class ServiceManager
         {
             Logger.Error("配置服务时出现问题:{Error}", e);
             return false;
+        }
+    }
+
+    public static List<ServiceBaseInfo> GetUnRegisteredServices()
+    {
+        try
+        {
+            using var context = new CoreContext();
+            return (from s in context.ServiceInfos where s.RegisterTime == 0 select s.ToServiceBaseInfo()).ToList();
+        }
+        catch (Exception e)
+        {
+            Logger.Error("获取未注册服务信息失败:{Error}", e);
+            return new List<ServiceBaseInfo>();
+        }
+    }
+
+    public static string GetConnectionStringByServiceID(string serviceID)
+    {
+        try
+        {
+            using var context = new CoreContext();
+            var service = (from s in context.ServiceInfos where s.ServiceID == serviceID select s).FirstOrDefault();
+            if (service == null)
+            {
+                Logger.Warn("获取未注册的服务配置,ServiceID={ServiceID}", serviceID);
+                return "未知服务";
+            }
+            return new RPCRegisterInfo()
+            {
+                ServiceID = service.ServiceID,
+                CoreIP = Context.ServiceBaseInfo.ServiceIP,
+                CorePort = int.Parse(Context.ServiceBaseInfo.ServicePort),
+                Token = service.Token == null ? "unknow" : service.Token,
+                ServiceType = service.ServiceType,
+            }.ToString();
+        }
+        catch (Exception e)
+        {
+            Logger.Error("获取服务配置时出现问题:{Error}", e);
+            return "未知服务";
         }
     }
 }
