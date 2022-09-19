@@ -95,12 +95,12 @@ public static partial class ServiceManager
             }
             var serviceInfo = (
                 from s in context.ServiceInfos
-                where s.ServiceID == Context.ServiceID
+                where s.ServiceID == registerInfo.ServiceID
                 select s
             ).FirstOrDefault();
             if (serviceInfo == null)
             {
-                Logger.Warn("收到了未注册的服务连接请求,ServiceID={ServiceID}", Context.ServiceID);
+                Logger.Warn("收到了未注册的服务连接请求,ServiceID={ServiceID}", registerInfo.ServiceID);
                 return null;
             }
             if (serviceInfo.ConnectCount == 0)
@@ -112,7 +112,7 @@ public static partial class ServiceManager
                 serviceInfo.RegisterTime = CUGOJ.CUGOJ_Tools.Tools.CommonTools.UnixMili();
                 context.Update(serviceInfo);
                 context.SaveChanges();
-                Logger.Info("服务已连接,ServiceID={ServiceID},服务地址 {IP}:{Port}", Context.ServiceID, Context.ClientIP, port);
+                Logger.Info("服务已连接,ServiceID={ServiceID},服务地址 {IP}:{Port}", registerInfo.ServiceID, Context.ClientIP, port);
             }
             else
             {
