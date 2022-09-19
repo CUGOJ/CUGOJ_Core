@@ -95,12 +95,12 @@ public static partial class ServiceManager
             }
             var serviceInfo = (
                 from s in context.ServiceInfos
-                where s.ServiceID == Context.ServiceID
+                where s.ServiceID == registerInfo.ServiceID
                 select s
             ).FirstOrDefault();
             if (serviceInfo == null)
             {
-                Logger.Warn("收到了未注册的服务连接请求,ServiceID={ServiceID}", Context.ServiceID);
+                Logger.Warn("收到了未注册的服务连接请求,ServiceID={ServiceID}", registerInfo.ServiceID);
                 return null;
             }
             if (serviceInfo.ConnectCount == 0)
