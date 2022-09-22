@@ -112,7 +112,7 @@ public static partial class ServiceManager
                 serviceInfo.RegisterTime = CUGOJ.CUGOJ_Tools.Tools.CommonTools.UnixMili();
                 context.Update(serviceInfo);
                 context.SaveChanges();
-                Logger.Info("服务已连接,ServiceID={ServiceID},服务地址 {IP}:{Port}", Context.ServiceID, Context.ClientIP, port);
+                Logger.Info("服务已连接,ServiceID={ServiceID},服务地址 {IP}:{Port}", registerInfo.ServiceID, Context.ClientIP, port);
             }
             else
             {
