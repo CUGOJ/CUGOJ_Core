@@ -56,35 +56,21 @@ public class CoreServiceHandler : CUGOJ.RPC.Gen.Services.Core.CoreService.IAsync
         });
     }
 
-    public Task<GetProblemListResponse> GetProblemList(GetProblemListRequest req, CancellationToken cancellationToken = default)
+    public async Task<GetProblemResponse> GetProblem(GetProblemRequest req, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var problemStruct = await Service.Common.ProblemService.Processor.GetProblemDetail(req.ProblemId);
+        var resp = new GetProblemResponse(problemStruct);
+        resp.BaseResp = RPCTools.SuccessBaseResp();
+        return resp;
     }
 
-    public Task<GetProblemResponse> GetProblem(GetProblemRequest req, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<GetContestListResponse> GetContestList(GetContestListRequest req, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
 
     public Task<GetContestDetailResponse> GetContestDetail(GetContestDetailRequest req, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<SaveProblemInfoResponse> SaveProblemInfo(SaveProblemInfoRequest req, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
 
-    public Task<SaveContestInfoResponse> SaveContestInfo(SaveContestInfoRequest req, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
 
     public Task<GetUserDetailResponse> GetUserDetail(GetUserDetailRequest req, CancellationToken cancellationToken = default)
     {
@@ -121,10 +107,6 @@ public class CoreServiceHandler : CUGOJ.RPC.Gen.Services.Core.CoreService.IAsync
         throw new NotImplementedException();
     }
 
-    public Task<GetSubmissionDetailResponse> GetSubmissionDetail(GetSubmissionDetailRequest req, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
 
     public async Task<GetAllServicesResponse> GetAllServices(GetAllServicesRequest req, CancellationToken cancellationToken = default)
     {
@@ -194,5 +176,39 @@ public class CoreServiceHandler : CUGOJ.RPC.Gen.Services.Core.CoreService.IAsync
         else
             resp.BaseResp = RPCTools.SuccessBaseResp();
         return Task.FromResult(resp);
+    }
+
+    public async Task<OJGetProblemListResponse> OJGetProblemList(OJGetProblemListRequest req, CancellationToken cancellationToken = default)
+    {
+        var problemList = await Service.OJ.OJProblemService.Processor.GetProblemList(req.Cursor, req.Limit);
+        var resp = new OJGetProblemListResponse();
+        if (problemList == null)
+        {
+            throw new Exception("获取题目列表失败");
+        }
+        resp.ProblemList = problemList;
+        resp.ProblemStatus = new();
+        resp.BaseResp = RPCTools.SuccessBaseResp();
+        return resp;
+    }
+
+    public Task<RPC.Gen.Services.Core.GetContestListResponse> GetContestList(RPC.Gen.Services.Core.GetContestListRequest req, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<RPC.Gen.Services.Core.SaveProblemInfoResponse> SaveProblemInfo(RPC.Gen.Services.Core.SaveProblemInfoRequest req, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<RPC.Gen.Services.Core.SaveContestInfoResponse> SaveContestInfo(RPC.Gen.Services.Core.SaveContestInfoRequest req, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<RPC.Gen.Services.Core.GetSubmissionDetailResponse> GetSubmissionDetail(RPC.Gen.Services.Core.GetSubmissionDetailRequest req, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
 }
